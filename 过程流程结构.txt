@@ -1,0 +1,53 @@
+流程控制结构
+           顺序结构：程序从上往下依次执行
+		   分支结构：程序从两条或多条路径中选择一条去执行
+		   循环结构：程序在满足一定条件的基础上，重复执行一段代码
+		
+		
+		一、分支结构
+		    1.if函数
+			 语法
+			  if（表达式1，表达式2，表达式3）
+			  若表达式1成立，则if函数返回表达式2的值，否则返回表达式3的值
+			  
+			  应用：任何地方
+			  
+			2.case
+			 情况1：类似于Java中的switch语句，一般用于实现等值判断
+                    
+                 语法：
+                       case 变量|表达式|字段
+                       when 要判断的值 then 返回的值1;
+                       when 要判断的值 then 返回的值2;   
+					   ....
+					   else 要返回的值n或语句n;
+                       end case;					   
+			 情况2：类似于Java中的多重if语句，一般用于区间判断
+			       语法：
+                       case 
+                       when 要判断的条件 then 返回的值1或语句1;
+                       when 要判断的条件 then 返回的值2或语句2;
+					   .....
+					   else 要返回的值n或语句n;
+                       end case;
+					   
+		二、循环结构   均放置在begin end 里面
+		    1.while   
+			    语法：
+				  Lable：while loop_condition
+				  do
+				     loop_list
+				 end while label;
+				  
+			2.repeat
+			    语法：
+				 Label:repeat
+				    loop_list
+				 Until end_condtion
+				  end repeat label;
+				  
+			3.loop
+			    语法：
+			   Label:loop
+			    loop_list
+				end loop label;

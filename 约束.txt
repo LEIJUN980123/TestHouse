@@ -1,0 +1,67 @@
+常见约束
+    
+	含义：一种限制，用于限制表中数据，为了保证表中数据的准确和可靠性
+	语法：
+	create table 表名(
+	    字段名 字段类型 约束
+	)
+	分类：六大约束
+	   NOT NULL ：非空，用于保证该字段的值不能为空
+	   比如姓名、学号
+	   default：默认，用于保证该字段又默认值
+	   primary key :主键，用于保证该字段的值具有唯一性，并且非空
+	   unique:唯一，用于保证该字段的值具有唯一性，可以为空
+	   check：检查约束【mysql中不支持】
+	   foreign key:外键，用于限制两个表的关系，用于保证该字段的值必须来自于主键的关联列的值，在从表中添加外键约束，用于引用主表中某列的值
+	   
+	   
+	约束的添加分类：
+	    列级约束：
+		        六大约束语法上都支持，但外键约束没有效果
+				
+	    表级约束：
+		    除了非空、默认，其他都支持
+		
+		
+		主键与唯一的区别：
+              	都具备唯一性，
+                主键不能为空，唯一可以为空
+        外键：
+             1.要求在从表设置外键关系
+             2.插入数据时，先插入主表，再插入从表
+			 3.从表与主表关联列类型相同或兼容
+             4.主表的关联列必须是一个key（一般是主键或唯一）			 
+			 5.删除数据时，先删除从表，再删主表
+			
+	 1.添加列级约束
+	          直接在字段名和类型后面追加约束类型
+			  只对主键，非空，唯一，默认约束有用
+	   create table stuinfo(
+	         id int primary key, #主键
+			 stuname  varchar(20) not null,#非空
+			 gender char(1) check(gender='男' or gender='女'),#检查
+			 seat int unique，#唯一
+			 age int default 18, #默认约束
+			 majorId int foreign key peferences major(id) #外键
+	   );
+	   
+	   create table major(
+	        id int primary key,
+			majorName varchar(20)
+			gender char(1)
+	   );
+	   
+	2.添加表级约束
+	 create table stuinfo(
+	   id int,
+	   stuname  varchar(20),
+	   seat int,
+	   age int,
+	   majorId int,
+	   
+	   constraint pk primary key(id),#主键   #pk=约束名
+	   constraint uq unique，#唯一
+	   constraint ck check(gender='男' or gender='女'),#检查
+	   constraint fk_stuinfo_major foreign key(majorId) peferences major(id) #外键
+	 )  
+	  

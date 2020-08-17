@@ -1,0 +1,117 @@
+存储过程和函数
+           存储过程：一组预先编译好的SQL语句的集合
+		            
+					 创建语法：
+					          create procedure 存储过程名(参数列表)
+							  begin
+							       存储过程体
+							  end
+					 删除语法：drop procedure 存储过程名
+					 
+					 查看语法：show create procedure 存储过程名
+							  
+					 注意：
+					     参数列表包含三部分：参数模式  参数名 参数类型
+						 例如：
+						     IN stuname varchar(20)
+						 参数模式：
+                                 IN：该参数可以作为输入，也就是该参数需要调用方传入值
+                                 OUT：该参数可以作为输出，也就是该参数可以作为返回值
+                                 INOUT：即可作为输入也可作为输出，也就是该参数既需要传入值，又可以返回值
+                         								 
+					 使用语法：
+					     call 存储过程名（实例）
+						 #案例1 -无参数的情况
+						  delimiter $ #结束标语
+						  create  procedure myp1()
+						  begin
+						       insert into admin(username,'password')values('john','0000')values('tom','0000')values('jock','0000')
+						  end $
+						  
+						 调用
+						  call myp1()$
+						 #案例2  创建存储过程实现，根据女神名，查询对应的男神信息（-带in模式的存储过程）
+						 delimiter $
+						 create procedure myp2(IN beautyName varchar(20))
+						 begin
+						      select bo.*
+							  from boys bo
+							  right join beauty b ON bo.id=b.boyfriend_id
+							  where b.name=beautyName;
+						end $
+						
+						调用：
+						   call myp2('女神名')$
+						   
+						   
+						 #案例3  根据女神名，返回对应的男神名（-带out模式的存储过程）
+						   		 delimiter $
+						         create procedure myp5(IN beautyName varchar(20),OUT boyName varchar(20))
+						          begin
+						             select bo.boyName  INTO boyName
+							         from boys bo
+							         right join beauty b ON bo.id=b.boyfriend_id
+							         where b.name=beautyName;
+						          end $
+								  
+								调用：
+								 call myp5('小昭'，@bName)$
+								 select @bName$
+						 #案例4 传入a和b两个值，最终a和b都翻倍返回（——带inout模式参数的存储过程）
+						          delimiter $
+						         create procedure myp6(INOUT a INT,INOUT b INT)
+								 begin
+								    set a=a*2;
+									set b=b*2;
+								 end$
+								 
+								 调用
+								 set @m=10$
+								 set @n=20$
+								 call myp6(@m,@n)$
+								 select @m,@n$
+			
+
+
+
+ 			函数： 
+			    与存储过程区别：
+				存储过程：可以有0-n个返回值
+				函数：有且仅有一个返回值
+				
+				
+				创建语法：
+				 create function 函数名（参数列表） returns 返回类型
+				  begin  
+				     函数体
+					 
+				  end
+				  
+				 注意： 
+				  1.参数列表 包含两部分
+				     参数名 参数类型
+                  
+                  2.函数体：肯定会有return，如果没有会报错。
+                   				  
+				  3.使用delimiter语句设置结束标志
+
+                调用语法：
+
+                   select 函数名（参数列表）
+
+                查看语法：show create function 函数名;
+				删除语法：drop function 函数名;
+                案例1：
+                    SET GLOBAL log_bin_trust_function_creators = 1;
+                    delimiter $
+                    create function myf1() returns int
+                      begin   
+                        declare c int default 0 ;#定义变量
+                        select count(*) into c #赋值
+                        from user;
+                        return c;
+                      end $
+					调用
+                      select myf1() 总人数				
+					 
+						   
